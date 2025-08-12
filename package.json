@@ -1,0 +1,65 @@
+{
+	"name": "@synpatico/core",
+	"version": "1.2.0",
+	"private": false,
+	"description": "Core protocol engine for Synpatico, providing stateless serialization and data structure management.",
+	"author": "Michael Sweeney <overthemike@gmail.com>",
+	"type": "module",
+	"source": "./src/index.ts",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/src/index.d.ts",
+	"exports": {
+		"./package.json": "./package.json",
+		".": {
+			"require": {
+				"types": "./dist/src/index.d.ts",
+				"default": "./dist/index.cjs"
+			},
+			"import": {
+				"types": "./dist/src/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		}
+	},
+	"scripts": {
+		"build": "pnpm run clean && pnpm run build:types && pnpm run build:js",
+		"build:types": "tsc --emitDeclarationOnly --declarationMap",
+		"build:js": "tsup",
+		"clean": "rm -rf dist",
+		"bench": "vitest bench",
+		"test": "vitest run",
+		"test:ui": "vitest --ui",
+		"coverage": "vitest run --coverage"
+	},
+	"files": [
+		"dist",
+		"README.md"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/synpatico/core.git",
+		"directory": "packages/core"
+	},
+	"bugs": {
+		"url": "https://github.com/synpatico/core/issues"
+	},
+	"homepage": "https://github.com/synpatico/core/tree/main/packages/core",
+	"license": "MIT",
+	"dependencies": {
+		"@synpatico/genome": "workspace:*",
+		"valtio": "^1.13.2"
+	},
+	"devDependencies": {
+		"@types/node": "^20.19.9",
+		"@vitest/coverage-v8": "^3.0.9",
+		"@vitest/ui": "^3.0.9",
+		"tsup": "^8.0.2",
+		"typescript": "^5.4.5",
+		"vite": "^6.2.3",
+		"vitest": "^3.0.9"
+	}
+}

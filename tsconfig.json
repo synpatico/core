@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"outDir": "dist",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "strict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+	},
+	"include": [
+		"src",
+		"tests/cache-management.test.ts",
+		"tests/protocol.core.test.ts",
+		"tests/protocol.simple.test.ts"
+	],
+	"exclude": ["node_modules", "dist"],
+}

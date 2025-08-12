@@ -1,0 +1,26 @@
+{
+  "name": "@synpatico/quick-demo",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "30-second demonstration of Synpatico's bandwidth optimization",
+  "scripts": {
+    "demo": "node demo.js",
+    "perf": "node performance-comparison.js",
+    "bench": "node detailed-benchmarks.js",
+    "micro": "node micro-benchmarks.js",
+    "worker": "node worker-demo.js",
+    "test-worker": "node integrated-worker-test.js",
+    "json-bench": "node json-stringify-benchmark.js",
+    "flatten-bench": "node flattening-benchmark.js",
+    "direct-bench": "node direct-paths-benchmark.js",
+    "complex-bench": "node complex-data-benchmark.js"
+  },
+  "dependencies": {
+    "@synpatico/core": "workspace:*",
+    "@synpatico/genome": "workspace:*",
+    "tinybench": "^2.8.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.1.4"
+  }
+}
