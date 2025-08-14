@@ -23,7 +23,7 @@ export const TYPE_MARKER = {
 	/** DOM element marker (for future use) */
 	DOMElement: "DOMElement",
 	/** Class instance marker (for future use) */
-	Class: "Class",	
+	Class: "Class",
 } as const
 
 /**

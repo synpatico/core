@@ -63,7 +63,7 @@ let mapKeyOrderCacheSize = 0
  * Configures protocol caching behavior for production environments.
  * Should be called once at application startup to set cache limits and behavior.
  * Migrates existing cache entries to respect new size limits.
- * 
+ *
  * @param config - Cache configuration options to apply
  */
 export function configureProtocolCaching(config: ProtocolCacheConfig): void {
@@ -84,7 +84,7 @@ export function configureProtocolCaching(config: ProtocolCacheConfig): void {
 /**
  * Gets current cache statistics for monitoring and debugging.
  * Provides detailed information about cache utilization and configuration.
- * 
+ *
  * @returns Complete cache statistics including both shape and key order caches
  */
 export function getProtocolCacheStats(): CacheStats {
@@ -102,7 +102,7 @@ export function getProtocolCacheStats(): CacheStats {
 /**
  * Forces eviction of old cache entries when approaching configured limits.
  * Performs preemptive cleanup to maintain performance and memory usage.
- * 
+ *
  * @returns Object containing the number of entries evicted
  */
 export function evictOldCacheEntries(): { evicted: number } {
@@ -151,7 +151,7 @@ export function resetProtocolState(): void {
 /**
  * Gets a shape definition from the cache by signature.
  * Updates the access time for LRU eviction.
- * 
+ *
  * @param signature - Unique signature identifying the shape
  * @returns The cached shape definition, or undefined if not found
  */
@@ -163,7 +163,7 @@ export function getShapeFromCache(signature: string): Record<string, unknown> | 
 
 /**
  * Stores a shape definition in the cache with automatic LRU eviction.
- * 
+ *
  * @param signature - Unique signature identifying the shape
  * @param shape - Shape definition to cache
  */
@@ -173,7 +173,7 @@ export function setShapeInCache(signature: string, shape: Record<string, unknown
 
 /**
  * Checks if a shape definition exists in the cache without updating access time.
- * 
+ *
  * @param signature - Unique signature identifying the shape
  * @returns True if the shape is cached
  */
@@ -184,7 +184,7 @@ export function hasShapeInCache(signature: string): boolean {
 /**
  * Gets the current genome key order cache.
  * Returns null if the cache hasn't been initialized or has been reset.
- * 
+ *
  * @returns The key order cache Map, or null if not available
  */
 export function getMapKeyOrderCache(): Map<string, number> | null {
@@ -193,7 +193,7 @@ export function getMapKeyOrderCache(): Map<string, number> | null {
 
 /**
  * Sets the genome key order cache with the provided Map and size.
- * 
+ *
  * @param cache - The key order Map to set
  * @param size - The size of the cache for tracking purposes
  */
@@ -204,7 +204,7 @@ export function setMapKeyOrderCache(cache: Map<string, number>, size: number): v
 
 /**
  * Gets the current size of the genome key order cache.
- * 
+ *
  * @returns The number of entries in the key order cache
  */
 export function getMapKeyOrderCacheSize(): number {
@@ -213,7 +213,7 @@ export function getMapKeyOrderCacheSize(): number {
 
 /**
  * Gets the maximum allowed size for the genome key order cache.
- * 
+ *
  * @returns The configured maximum cache size
  */
 export function getMaxKeyOrderCacheSize(): number {
