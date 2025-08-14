@@ -26,13 +26,18 @@
 		"build": "pnpm run clean && pnpm run build:types && pnpm run build:js",
 		"build:types": "tsc --emitDeclarationOnly --declarationMap",
 		"build:js": "tsup",
+		"changeset": "changeset",
+		"version": "changeset version",
+		"release": "changeset publish",
 		"clean": "rm -rf dist",
-		"bench": "vitest bench",
 		"lint": "biome lint",
 		"lint:fix": "biome lint --fix",
 		"test": "vitest run",
-		"test:ui": "vitest --ui",
-		"coverage": "vitest run --coverage"
+		"typecheck": "tsc --noEmit",
+		"prepublishOnly": "pnpm run build",
+		"bench": "vitest bench",
+		"coverage": "vitest run --coverage",
+		"test:ui": "vitest --ui"
 	},
 	"files": [
 		"dist",
@@ -52,10 +57,10 @@
 	"homepage": "https://github.com/synpatico/core/tree/main/packages/core",
 	"license": "MIT",
 	"dependencies": {
-		"@synpatico/genome": "^1.0.2",
-		"valtio": "^1.13.2"
+		"@synpatico/genome": "^1.0.2"
 	},
 	"devDependencies": {
+		"@changesets/cli": "^2.29.5",
 		"@types/node": "^20.19.9",
 		"@vitest/coverage-v8": "^3.0.9",
 		"@vitest/ui": "^3.0.9",
