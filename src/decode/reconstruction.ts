@@ -14,7 +14,7 @@ import {
 /**
  * Reconstructs an object from its extracted values and shape definition.
  * This is the standard reconstruction algorithm that handles all data types.
- * 
+ *
  * @param values - Array of extracted values in deterministic order
  * @param shape - Shape definition describing the object structure
  * @returns The reconstructed object matching the original structure
@@ -61,7 +61,7 @@ export function reconstructObject(values: unknown[], shape: Record<string, unkno
 /**
  * Optimized object reconstruction that caches computed keys to avoid repeated calculations.
  * Provides better performance for complex nested structures with repeated shapes.
- * 
+ *
  * @param values - Array of extracted values in deterministic order
  * @param shape - Shape definition describing the object structure
  * @returns The reconstructed object with improved performance characteristics
@@ -117,7 +117,7 @@ export function reconstructObjectOptimized(
 /**
  * Ultra-fast object reconstruction using pre-compiled layouts and optimized array handling.
  * Eliminates repeated Object.keys operations and provides specialized paths for homogeneous arrays.
- * 
+ *
  * @param values - Array of extracted values in deterministic order
  * @param shape - Shape definition describing the object structure
  * @returns The reconstructed object with maximum performance optimization
@@ -219,7 +219,7 @@ export function reconstructObjectFast(values: unknown[], shape: Record<string, u
 /**
  * Gets or creates the genome key order cache for deterministic property ordering.
  * Uses the global key map from genome package to ensure consistent ordering across all operations.
- * 
+ *
  * @returns A Map containing key names to their deterministic order indices
  */
 function getMapKeyOrder(): Map<string, number> {
@@ -254,7 +254,7 @@ function getMapKeyOrder(): Map<string, number> {
 /**
  * Genome-optimized object reconstruction using deterministic property ordering from GLOBAL_KEY_MAP.
  * Provides consistent ordering across all operations by leveraging the global key registry.
- * 
+ *
  * @param values - Array of extracted values in deterministic order
  * @param shape - Shape definition describing the object structure
  * @returns The reconstructed object with genome-consistent property ordering
@@ -364,7 +364,7 @@ export function reconstructObjectGenome(
  * Experimental compiled object reconstruction that generates optimized code for specific shapes.
  * Creates custom functions tailored to the exact structure being decoded for maximum performance.
  * Falls back to fast reconstruction if compilation fails.
- * 
+ *
  * @param values - Array of extracted values in deterministic order
  * @param shape - Shape definition describing the object structure
  * @returns The reconstructed object using compiled or fast reconstruction

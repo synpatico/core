@@ -1,6 +1,6 @@
 {
 	"name": "@synpatico/core",
-	"version": "1.2.0",
+	"version": "1.0.0",
 	"private": false,
 	"description": "Core protocol engine for Synpatico, providing stateless serialization and data structure management.",
 	"author": "Michael Sweeney <overthemike@gmail.com>",
@@ -28,6 +28,8 @@
 		"build:js": "tsup",
 		"clean": "rm -rf dist",
 		"bench": "vitest bench",
+		"lint": "biome lint",
+		"lint:fix": "biome lint --fix",
 		"test": "vitest run",
 		"test:ui": "vitest --ui",
 		"coverage": "vitest run --coverage"
@@ -50,7 +52,7 @@
 	"homepage": "https://github.com/synpatico/core/tree/main/packages/core",
 	"license": "MIT",
 	"dependencies": {
-		"@synpatico/genome": "workspace:*",
+		"@synpatico/genome": "^1.0.2",
 		"valtio": "^1.13.2"
 	},
 	"devDependencies": {

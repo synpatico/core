@@ -31,7 +31,7 @@ export const resetProtocolState = resetState
 /**
  * Processes JavaScript values for serialization, converting special types
  * (Date, Map, Set, Error) to serializable representations with type markers.
- * 
+ *
  * @param obj - The value to process for serialization
  * @returns The processed value with special types converted
  * @private
@@ -71,7 +71,7 @@ function processForSerialization(obj: unknown): unknown {
 /**
  * Processes serialized values for deserialization, restoring special types
  * (Date, Map, Set, Error) from their serialized representations.
- * 
+ *
  * @param obj - The value to process for deserialization
  * @returns The restored value with special types reconstructed
  * @private
@@ -130,10 +130,10 @@ function processForDeserialization(obj: unknown): unknown {
 /**
  * Creates a structure definition from sample data, capturing its shape and generating a unique ID.
  * This definition can be reused for encoding/decoding similar data structures.
- * 
+ *
  * @param data - The sample object to analyze
  * @returns A structure definition containing shape and ID
- * 
+ *
  * @example
  * ```javascript
  * const data = { users: [{ id: 1, name: "John" }] };
@@ -150,7 +150,7 @@ export function createStructureDefinition(data: object): StructureDefinition {
 /**
  * Creates an optimized structure definition with enhanced performance characteristics.
  * Uses optimized shape creation for better encoding/decoding speed.
- * 
+ *
  * @param data - The sample object to analyze
  * @returns An optimized structure definition
  */
@@ -163,12 +163,12 @@ export function createStructureDefinitionOptimized(data: object): StructureDefin
 /**
  * Encodes an object into an optimized packet using a known structure ID.
  * Extracts only the values, relying on the structure definition for reconstruction.
- * 
+ *
  * @param data - The object to encode
  * @param structureId - The structure ID from a previous createStructureDefinition call
  * @param paths - Optional pre-computed value extraction paths for optimization
  * @returns An optimized structure packet containing only values
- * 
+ *
  * @example
  * ```javascript
  * const packet = encode(userData, structureDef.id);
@@ -197,10 +197,10 @@ export function encode(data: object, structureId: string, paths?: string[][]): S
 /**
  * Creates a structure definition with pre-computed value extraction paths.
  * Provides optimal performance by pre-calculating all value locations.
- * 
+ *
  * @param data - The sample object to analyze
  * @returns Structure definition with paths for direct value extraction
- * 
+ *
  * @example
  * ```javascript
  * const { shape, id, paths } = createStructureDefinitionWithPaths(data);
@@ -243,7 +243,7 @@ export function createStructureDefinitionWithPaths(
 /**
  * Encodes data using pre-computed paths for maximum performance.
  * Bypasses recursive traversal by directly accessing value locations.
- * 
+ *
  * @param data - The object to encode
  * @param structureId - The structure ID
  * @param paths - Pre-computed paths from createStructureDefinitionWithPaths
@@ -268,7 +268,7 @@ export function encodeWithDirectPaths(
 /**
  * Analyzes structure and data characteristics to choose optimal decode strategy.
  * Automatically selects between standard, ultra-fast, compiled, or genome decoders.
- * 
+ *
  * @param shape - The structure shape to analyze
  * @param valuesLength - Number of values to decode
  * @returns The optimal decoder strategy name
@@ -361,11 +361,11 @@ function analyzeDecodeStrategy(
 /**
  * Decodes a structure packet back to its original object form.
  * Automatically selects the optimal decoding strategy based on data characteristics.
- * 
+ *
  * @param packet - The encoded structure packet containing values
  * @param structureDef - The structure definition for reconstruction
  * @returns The fully reconstructed object with all types preserved
- * 
+ *
  * @example
  * ```javascript
  * const packet = encode(data, structureDef.id);
@@ -410,7 +410,7 @@ export function decode(packet: StructurePacket, structureDef: StructureDefinitio
 /**
  * Decodes using the optimized decoder with key caching.
  * Good for structures with many repeated property names.
- * 
+ *
  * @param packet - The encoded structure packet
  * @param structureDef - The structure definition
  * @returns The reconstructed object
@@ -426,7 +426,7 @@ export function decodeOptimized(
 /**
  * Decodes using the ultra-fast single-pass decoder.
  * Optimal for complex nested structures and homogeneous arrays.
- * 
+ *
  * @param packet - The encoded structure packet
  * @param structureDef - The structure definition
  * @returns The reconstructed object
@@ -439,7 +439,7 @@ export function decodeFast(packet: StructurePacket, structureDef: StructureDefin
 /**
  * Decodes using dynamically compiled reconstruction functions.
  * Best for very large datasets with repeated patterns.
- * 
+ *
  * @param packet - The encoded structure packet
  * @param structureDef - The structure definition
  * @returns The reconstructed object
@@ -455,7 +455,7 @@ export function decodeCompiled(
 /**
  * Decodes using genome bitmap-optimized property ordering.
  * Leverages GLOBAL_KEY_MAP for deterministic reconstruction.
- * 
+ *
  * @param packet - The encoded structure packet
  * @param structureDef - The structure definition
  * @returns The reconstructed object

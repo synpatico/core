@@ -96,18 +96,17 @@ export interface WakuIntegrationConfig {
 	enablePatternLearning?: boolean
 }
 
+declare const __brand: unique symbol
+type Brand<T, TBrand> = T & { [__brand]: TBrand }
 
-declare const __brand: unique symbol;
-type Brand<T, TBrand> = T & { [__brand]: TBrand };
-
-export type URLString = Brand<string, 'URL'>;
+export type URLString = Brand<string, "URL">
 
 // Type guard to check if a string is a valid URL
 export const isValidURL = (input: string): input is URLString => {
-  try {
-    new URL(input);
-    return true;
-  } catch {
-    return false;
-  }
-};
+	try {
+		new URL(input)
+		return true
+	} catch {
+		return false
+	}
+}

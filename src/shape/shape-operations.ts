@@ -8,7 +8,7 @@ import { getShapeFromCache, setShapeInCache } from "../cache/cache-manager.js"
 /**
  * Creates a unique signature for an object based on its keys and their types.
  * The signature is deterministic and can be used for caching similar object structures.
- * 
+ *
  * @param obj - The object to create a signature for
  * @returns A string signature representing the object's structure
  */
@@ -34,7 +34,7 @@ function createShapeSignature(obj: Record<string, unknown>): string {
 /**
  * Creates a shape definition for any JavaScript value, with automatic caching for objects.
  * The shape captures the complete structure and type information needed for encoding/decoding.
- * 
+ *
  * @param obj - The value to create a shape for (any JavaScript type)
  * @returns A shape object containing type and structural information
  */
@@ -79,7 +79,7 @@ export function createShape(obj: unknown): Record<string, unknown> {
 /**
  * Creates an optimized shape definition that detects homogeneous arrays.
  * When all array items have identical structure, uses a more efficient representation.
- * 
+ *
  * @param obj - The value to create an optimized shape for
  * @returns An optimized shape object, using homogeneous-array type when applicable
  */
