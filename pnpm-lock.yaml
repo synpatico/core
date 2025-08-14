@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@synpatico/core':
-        specifier: 'link:'
-        version: 'link:'
       '@synpatico/genome':
         specifier: ^1.0.2
         version: 1.0.2
