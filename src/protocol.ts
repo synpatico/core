@@ -3,29 +3,27 @@
  * @module @synpatico/core/protocol
  */
 
-import { GLOBAL_KEY_MAP, getStructureInfo } from "@synpatico/genome"
+import { GLOBAL_KEY_MAP, getStructureInfo } from '@synpatico/genome'
 import {
 	configureProtocolCaching as configureCaching,
-	evictOldCacheEntries as evictCache,
 	getProtocolCacheStats as getCacheStats,
 	resetProtocolState as resetState,
-} from "./cache/cache-manager.js"
+} from './cache/cache-manager.js'
 import {
 	reconstructObject,
 	reconstructObjectCompiled,
 	reconstructObjectFast,
 	reconstructObjectGenome,
 	reconstructObjectOptimized,
-} from "./decode/reconstruction.js"
-import { TYPE_MARKER, type TypeMarker } from "./serialization-types.js"
-import { createShape, createShapeOptimized } from "./shape/shape-operations.js"
-import type { StructureDefinition, StructurePacket } from "./types.js"
-import { extractValues, extractValuesDirectPaths } from "./values/value-extraction.js"
+} from './decode/reconstruction.js'
+import { TYPE_MARKER, type TypeMarker } from './serialization-types.js'
+import { createShape, createShapeOptimized } from './shape/shape-operations.js'
+import type { StructureDefinition, StructurePacket } from './types.js'
+import { extractValues, extractValuesDirectPaths } from './values/value-extraction.js'
 
 // Re-export cache management functions
 export const configureProtocolCaching = configureCaching
 export const getProtocolCacheStats = getCacheStats
-export const evictOldCacheEntries = evictCache
 export const resetProtocolState = resetState
 
 /**
@@ -37,7 +35,7 @@ export const resetProtocolState = resetState
  * @private
  */
 function processForSerialization(obj: unknown): unknown {
-	if (obj === null || obj === undefined || typeof obj !== "object") {
+	if (obj === null || obj === undefined || typeof obj !== 'object') {
 		return obj
 	}
 	if (obj instanceof Date) {
@@ -77,15 +75,15 @@ function processForSerialization(obj: unknown): unknown {
  * @private
  */
 function processForDeserialization(obj: unknown): unknown {
-	if (obj === null || obj === undefined || typeof obj !== "object") {
+	if (obj === null || obj === undefined || typeof obj !== 'object') {
 		return obj
 	}
 	const objRecord = obj as Record<string, unknown>
-	if ("__type" in objRecord && typeof objRecord.__type === "string") {
+	if ('__type' in objRecord && typeof objRecord.__type === 'string') {
 		const typeMarker = objRecord.__type as TypeMarker
 		switch (typeMarker) {
 			case TYPE_MARKER.Date:
-				if (typeof objRecord.value === "string") {
+				if (typeof objRecord.value === 'string') {
 					return new Date(objRecord.value)
 				}
 				return null
@@ -100,13 +98,13 @@ function processForDeserialization(obj: unknown): unknown {
 				}
 				return new Set()
 			case TYPE_MARKER.Error: {
-				if (typeof objRecord.value === "object" && objRecord.value !== null) {
+				if (typeof objRecord.value === 'object' && objRecord.value !== null) {
 					const errorValue = objRecord.value as Record<string, unknown>
-					const error = new Error(typeof errorValue.message === "string" ? errorValue.message : "")
-					if (typeof errorValue.name === "string") {
+					const error = new Error(typeof errorValue.message === 'string' ? errorValue.message : '')
+					if (typeof errorValue.name === 'string') {
 						error.name = errorValue.name
 					}
-					if (typeof errorValue.stack === "string") {
+					if (typeof errorValue.stack === 'string') {
 						error.stack = errorValue.stack
 					}
 					return error
@@ -184,7 +182,7 @@ export function encode(data: object, structureId: string, paths?: string[][]): S
 	const processedValues = processForSerialization(rawValues)
 
 	return {
-		type: "values-only",
+		type: 'values-only',
 		structureId: structureId,
 		values: processedValues,
 		metadata: {
@@ -217,7 +215,7 @@ export function createStructureDefinitionWithPaths(
 	const paths: string[][] = []
 
 	const collectPaths = (current: unknown, path: string[] = []) => {
-		if (typeof current !== "object" || current === null) {
+		if (typeof current !== 'object' || current === null) {
 			paths.push([...path])
 			return
 		}
@@ -255,7 +253,7 @@ export function encodeWithDirectPaths(
 	paths: string[][],
 ): StructurePacket {
 	return {
-		type: "values-only",
+		type: 'values-only',
 		structureId: structureId,
 		values: extractValuesDirectPaths(data, paths),
 		metadata: {
@@ -277,7 +275,7 @@ export function encodeWithDirectPaths(
 function analyzeDecodeStrategy(
 	shape: Record<string, unknown>,
 	valuesLength: number,
-): "standard" | "ultra-fast" | "compiled" | "genome" {
+): 'standard' | 'ultra-fast' | 'compiled' | 'genome' {
 	let complexity = 0
 	let depth = 0
 	let arrayCount = 0
@@ -289,15 +287,15 @@ function analyzeDecodeStrategy(
 		depth = Math.max(depth, currentDepth)
 		const type = currentShape.type as string
 
-		if (type === "object") {
+		if (type === 'object') {
 			objectCount++
-			const keys = Object.keys(currentShape).filter((k) => k !== "type" && k !== "_signature")
+			const keys = Object.keys(currentShape).filter((k) => k !== 'type' && k !== '_signature')
 			complexity += keys.length
 
 			for (const key of keys) {
 				analyze(currentShape[key] as Record<string, unknown>, currentDepth + 1)
 			}
-		} else if (type === "array") {
+		} else if (type === 'array') {
 			arrayCount++
 			const itemShapes = currentShape.itemShapes as Record<string, unknown>[]
 			complexity += itemShapes.length
@@ -306,7 +304,7 @@ function analyzeDecodeStrategy(
 			for (const itemShape of itemShapes) {
 				analyze(itemShape, currentDepth + 1)
 			}
-		} else if (type === "homogeneous-array") {
+		} else if (type === 'homogeneous-array') {
 			arrayCount++
 			homogeneousArrays++
 			const length = currentShape.length as number
@@ -326,36 +324,36 @@ function analyzeDecodeStrategy(
 
 	// Small, simple structures: standard recursive is fine
 	if (complexity <= 5 && depth <= 2 && arrayCount === 0 && valuesLength <= 20) {
-		return "standard"
+		return 'standard'
 	}
 
 	// Use genome decoder when bitmap data is available and we have objects with properties
 	if (hasGenomeData && objectCount > 0 && complexity > 3) {
-		return "genome"
+		return 'genome'
 	}
 
 	// Large homogeneous arrays: ultra-fast decoder excels here
 	if (homogeneousArrays > 0 && totalArrayItems > 10) {
-		return "ultra-fast"
+		return 'ultra-fast'
 	}
 
 	// Complex nested structures: ultra-fast decoder wins
 	if (depth > 2 || (arrayCount > 0 && objectCount > 3)) {
-		return "ultra-fast"
+		return 'ultra-fast'
 	}
 
 	// Medium complexity with multiple objects: ultra-fast for layout caching
 	if (objectCount > 2 && complexity > 8) {
-		return "ultra-fast"
+		return 'ultra-fast'
 	}
 
 	// Very large datasets: consider compiled approach for repeated patterns
 	if (valuesLength > 1000 && homogeneousArrays > 0) {
-		return "compiled"
+		return 'compiled'
 	}
 
 	// Default to standard for simple cases
-	return "standard"
+	return 'standard'
 }
 
 /**
@@ -380,22 +378,22 @@ export function decode(packet: StructurePacket, structureDef: StructureDefinitio
 	let reconstructed: unknown
 
 	switch (strategy) {
-		case "standard":
+		case 'standard':
 			// Simple structures: use lightweight recursive approach
 			reconstructed = reconstructObject(packet.values as unknown[], structureDef.shape)
 			break
 
-		case "genome":
+		case 'genome':
 			// Use genome bitmap for deterministic property ordering
 			reconstructed = reconstructObjectGenome(packet.values as unknown[], structureDef.shape)
 			break
 
-		case "ultra-fast":
+		case 'ultra-fast':
 			// Complex/nested structures: use optimized single-pass decoder
 			reconstructed = reconstructObjectFast(packet.values as unknown[], structureDef.shape)
 			break
 
-		case "compiled":
+		case 'compiled':
 			// Very large datasets with patterns: use code generation
 			reconstructed = reconstructObjectCompiled(packet.values as unknown[], structureDef.shape)
 			break
