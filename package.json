@@ -1,6 +1,6 @@
 {
 	"name": "@synpatico/core",
-	"version": "1.0.1",
+	"version": "1.1.0",
 	"private": false,
 	"description": "A high-performance serialization protocol engine that optimizes JSON data transmission through adaptive encoding and decoding",
 	"author": "Michael Sweeney <overthemike@gmail.com>",
