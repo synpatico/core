@@ -17,35 +17,41 @@ export interface LRUCache<K, V> {
 export function createLRUCache<K, V>(maxSize: number): LRUCache<K, V> {
 	const map = new Map<K, LRUNode<K, V>>()
 
-	const head = {
+	const head: LRUNode<K, V> = {
 		key: null as unknown as K,
 		value: null as unknown as V,
 		prev: null,
 		next: null,
-	} as LRUNode<K, V>
-	const tail = {
+	}
+	const tail: LRUNode<K, V> = {
 		key: null as unknown as K,
 		value: null as unknown as V,
 		prev: head,
 		next: null,
-	} as LRUNode<K, V>
+	}
 	head.next = tail
 
-	function moveToFront(node: LRUNode<K, V>) {
+	function removeNode(node: LRUNode<K, V>) {
 		node.prev!.next = node.next
 		node.next!.prev = node.prev
+	}
 
+	function insertAtFront(node: LRUNode<K, V>) {
 		node.next = head.next
 		node.prev = head
 		head.next!.prev = node
 		head.next = node
 	}
 
+	function moveToFront(node: LRUNode<K, V>) {
+		removeNode(node)
+		insertAtFront(node)
+	}
+
 	function removeLast(): K | null {
 		if (tail.prev === head) return null
 		const node = tail.prev!
-		node.prev!.next = tail
-		tail.prev = node.prev
+		removeNode(node)
 		return node.key
 	}
 
@@ -72,7 +78,7 @@ export function createLRUCache<K, V>(maxSize: number): LRUCache<K, V> {
 
 			const node: LRUNode<K, V> = { key, value, prev: null, next: null }
 			map.set(key, node)
-			moveToFront(node)
+			insertAtFront(node) // Use insertAtFront for new nodes, not moveToFront
 		},
 
 		has: (key: K) => map.has(key),
@@ -80,8 +86,7 @@ export function createLRUCache<K, V>(maxSize: number): LRUCache<K, V> {
 		delete(key: K) {
 			const node = map.get(key)
 			if (!node) return false
-			node.prev!.next = node.next
-			node.next!.prev = node.prev
+			removeNode(node)
 			map.delete(key)
 			return true
 		},

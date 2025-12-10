@@ -178,8 +178,12 @@ export function reconstructObjectFast(values: unknown[], shape: Record<string, u
 	return rebuild(shape)
 }
 
+// core/src/decode/reconstruction.ts
+
 /**
- * Genome-optimized reconstruction using GLOBAL_KEY_MAP ordering.
+ * Genome-optimized reconstruction - currently uses alphabetical ordering
+ * to match the extraction order. The genome bitmap is available for future
+ * optimization where both encode and decode use consistent genome ordering.
  */
 export function reconstructObjectGenome(
 	values: unknown[],
@@ -188,24 +192,19 @@ export function reconstructObjectGenome(
 	let valueIndex = 0
 	const layoutCache = new Map<Record<string, unknown>, string[]>()
 
-	const getGenomeLayout = (shapeObj: Record<string, unknown>): string[] => {
+	const getLayout = (shapeObj: Record<string, unknown>): string[] => {
 		let layout = layoutCache.get(shapeObj)
 		if (!layout) {
-			const keys = Object.keys(shapeObj).filter(
-				(k) =>
-					k !== 'type' &&
-					k !== '_signature' &&
-					k !== 'length' &&
-					k !== 'itemShape' &&
-					k !== 'itemShapes',
-			)
-
-			layout = keys.sort((a, b) => {
-				const indexA = GLOBAL_KEY_MAP.get(a) ?? BigInt(Number.MAX_SAFE_INTEGER)
-				const indexB = GLOBAL_KEY_MAP.get(b) ?? BigInt(Number.MAX_SAFE_INTEGER)
-				return indexA < indexB ? -1 : indexA > indexB ? 1 : 0
-			})
-
+			layout = Object.keys(shapeObj)
+				.filter(
+					(k) =>
+						k !== 'type' &&
+						k !== '_signature' &&
+						k !== 'length' &&
+						k !== 'itemShape' &&
+						k !== 'itemShapes',
+				)
+				.sort() // Use alphabetical sort to match extractValues
 			layoutCache.set(shapeObj, layout)
 		}
 		return layout
@@ -224,7 +223,7 @@ export function reconstructObjectGenome(
 			const arr = new Array(length)
 
 			if (itemShape.type === 'object') {
-				const layout = getGenomeLayout(itemShape)
+				const layout = getLayout(itemShape)
 				for (let i = 0; i < length; i++) {
 					const obj: Record<string, unknown> = {}
 					for (const key of layout) {
@@ -249,7 +248,7 @@ export function reconstructObjectGenome(
 			return arr
 		}
 
-		const layout = getGenomeLayout(currentShape)
+		const layout = getLayout(currentShape)
 		const obj: Record<string, unknown> = {}
 		for (const key of layout) {
 			obj[key] = rebuild(currentShape[key] as Record<string, unknown>)
